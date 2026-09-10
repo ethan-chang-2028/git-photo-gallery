@@ -1,7 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
     background-color: #f5f5f5;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
 }
 
 .gallery {
@@ -57,6 +62,6 @@ body {
 }
 
 h1 {
-    text-align: center;
     color: #444;
+    margin: 0;
 }
