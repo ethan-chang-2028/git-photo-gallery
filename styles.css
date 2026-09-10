@@ -43,3 +43,20 @@ body {
     font-size: 14px;
     color: #666;
 }
+
+@media (max-width: 720px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+h1 {
+    text-align: center;
+    color: #444;
+}
