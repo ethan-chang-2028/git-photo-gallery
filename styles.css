@@ -66,3 +66,16 @@ h1 {
     color: #444;
     margin: 0;
 }
+
+.category {
+    margin: 20px 0;
+}
+
+.category h2 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #e8e8e8;
+    border-radius: 8px;
+}
