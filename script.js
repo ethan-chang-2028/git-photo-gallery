@@ -27,7 +27,7 @@ async function analyzeWithGrok() {
     response.textContent = '';
 
     try {
-        const apiKey = process.env.GrokAPIKey || 'YOUR_GROK_API_KEY';
+        const apiKey = secrets.GrokAPIKey || 'YOUR_GROK_API_KEY';
         
         const imageData = await fetchImageAsBase64(selectedImage);
 
