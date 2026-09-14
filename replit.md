@@ -4,8 +4,10 @@ This is a plain HTML, CSS, and JavaScript project with no package dependencies o
 
 ## Run
 
-Use the **Start application** workflow. It serves the project on port 5000 with:
+Use the **Start application** workflow. It serves the project and the server-side Grok analysis endpoint on port 5000 with:
 
 ```sh
-python3 -m http.server 5000 --bind 0.0.0.0
+python3 server.py
 ```
+
+The Grok API key must be stored in Replit Secrets. It is read only by `server.py`; it is never sent to browser JavaScript.

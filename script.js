@@ -27,39 +27,26 @@ async function analyzeWithGrok() {
     response.textContent = '';
 
     try {
-        const apiKey = secrets.GrokAPIKey || 'YOUR_GROK_API_KEY';
-        
         const imageData = await fetchImageAsBase64(selectedImage);
 
-        const apiResponse = await fetch('https://api.grok.ai/v1/chat/completions', {
+        const apiResponse = await fetch('/api/analyze', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'grok-vision',
-                messages: [
-                    {
-                        role: 'user',
-                        content: [
-                            { type: 'text', text: `Analyze this image and answer: ${question}. Keep your response short and concise.` },
-                            { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${imageData}` } }
-                        ]
-                    }
-                ],
-                max_tokens: 200,
-                temperature: 0.7
+                question,
+                imageData
             })
         });
 
         const data = await apiResponse.json();
-        
-        if (data.choices && data.choices[0] && data.choices[0].message) {
-            response.textContent = data.choices[0].message.content;
+
+        if (apiResponse.ok && data.answer) {
+            response.textContent = data.answer;
             status.textContent = 'Analysis complete!';
         } else {
-            response.textContent = 'Error: Invalid response format from Grok API.';
+            response.textContent = `Error: ${data.error || 'The analysis request failed.'}`;
             status.textContent = 'Error';
         }
     } catch (error) {
