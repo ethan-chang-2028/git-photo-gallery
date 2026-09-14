@@ -27,12 +27,6 @@ async function analyzeWithGrok() {
     response.textContent = '';
 
     try {
-        const apiKey = typeof secrets !== 'undefined' ? secrets.GrokAPIKey : null;
-
-        if (!apiKey || apiKey === 'YOUR_GROK_API_KEY') {
-            throw new Error('Grok API key not configured. Set GrokAPIKey in Replit secrets.');
-        }
-
         const img = document.querySelector('.card.selected img');
         const imageUrl = img.src;
         const imageExt = imageUrl.split('.').pop().split('?')[0].toLowerCase();
@@ -44,35 +38,25 @@ async function analyzeWithGrok() {
 
         const imageData = await fetchImageAsBase64(imageUrl);
 
-        const apiResponse = await fetch('https://api.x.ai/v1/chat/completions', {
+        const apiResponse = await fetch('/api/analyze', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'grok-2-vision-preview',
-                messages: [
-                    {
-                        role: 'user',
-                        content: [
-                            { type: 'text', text: `Analyze this image and answer: ${question}. Keep your response short and concise.` },
-                            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${imageData}` } }
-                        ]
-                    }
-                ],
-                max_tokens: 200,
-                temperature: 0.7
+                question,
+                imageData,
+                mimeType
             })
         });
 
         const data = await apiResponse.json();
 
-        if (data.choices?.[0]?.message?.content) {
-            response.textContent = data.choices[0].message.content;
+        if (apiResponse.ok && data.answer) {
+            response.textContent = data.answer;
             status.textContent = 'Analysis complete!';
         } else {
-            response.textContent = `API Error: ${JSON.stringify(data)}`;
+            response.textContent = `API Error: ${data.error || 'The analysis request failed.'}`;
             status.textContent = 'Error';
         }
     } catch (error) {
