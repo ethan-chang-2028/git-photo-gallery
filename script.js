@@ -27,31 +27,58 @@ async function analyzeWithGrok() {
     response.textContent = '';
 
     try {
-        const imageData = await fetchImageAsBase64(selectedImage);
+        const apiKey = typeof secrets !== 'undefined' ? secrets.GrokAPIKey : 
+                      process.env.GrokAPIKey;
 
-        const apiResponse = await fetch('/api/analyze', {
+        if (!apiKey || apiKey === 'YOUR_GROK_API_KEY') {
+            throw new Error('Grok API key not configured. Set GrokAPIKey in Replit secrets.');
+        }
+
+        const img = document.querySelector('.card.selected img');
+        const imageUrl = img.src;
+        const imageExt = imageUrl.split('.').pop().split('?')[0].toLowerCase();
+
+        const mimeType = imageExt === 'jpg' || imageExt === 'jpeg' ? 'image/jpeg' :
+                        imageExt === 'png' ? 'image/png' :
+                        imageExt === 'webp' ? 'image/webp' :
+                        imageExt === 'avif' ? 'image/avif' : 'image/jpeg';
+
+        const imageData = await fetchImageAsBase64(imageUrl);
+
+        const apiResponse = await fetch('https://api.x.ai/v1/chat/completions', {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                question,
-                imageData
+                model: 'grok-2-vision-preview',
+                messages: [
+                    {
+                        role: 'user',
+                        content: [
+                            { type: 'text', text: `Analyze this image and answer: ${question}. Keep your response short and concise.` },
+                            { type: 'image_url', image_url: { url: `data:${mimeType};base64,${imageData}` } }
+                        ]
+                    }
+                ],
+                max_tokens: 200,
+                temperature: 0.7
             })
         });
 
         const data = await apiResponse.json();
 
-        if (apiResponse.ok && data.answer) {
-            response.textContent = data.answer;
+        if (data.choices?.[0]?.message?.content) {
+            response.textContent = data.choices[0].message.content;
             status.textContent = 'Analysis complete!';
         } else {
-            response.textContent = `Error: ${data.error || 'The analysis request failed.'}`;
+            response.textContent = `API Error: ${JSON.stringify(data)}`;
             status.textContent = 'Error';
         }
     } catch (error) {
         console.error('Error:', error);
-        response.textContent = `Error: ${error.message}. Please check your API key and try again.`;
+        response.textContent = `Error: ${error.message}`;
         status.textContent = 'Error';
     }
 }
@@ -69,7 +96,6 @@ async function fetchImageAsBase64(url) {
 
 document.getElementById('ai-analyze-btn').addEventListener('click', analyzeWithGrok);
 
-// Allow Enter key to trigger analysis
 document.getElementById('ai-question').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         analyzeWithGrok();
