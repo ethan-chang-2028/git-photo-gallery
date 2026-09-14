@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import re
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -13,7 +14,7 @@ XAI_ENDPOINT = "https://api.x.ai/v1/chat/completions"
 
 def secret_value():
     # Support the existing Replit Secret name and the conventional name.
-    return os.environ.get("GrokAPIKEy") or os.environ.get("GrokAPIKey") or os.environ.get("XAI_API_KEY")
+    return os.environ.get("GrokAPIKey") or os.environ.get("GrokAPIKEy") or os.environ.get("XAI_API_KEY")
 
 
 class GalleryHandler(SimpleHTTPRequestHandler):
@@ -48,8 +49,14 @@ class GalleryHandler(SimpleHTTPRequestHandler):
                 self.send_json({"error": "The Grok API secret is not configured in Replit Secrets."}, 503)
                 return
 
+            image_ext = "jpeg"
+            if image_data:
+                header_match = re.search(r'^data:image/(\w+);base64,', image_data)
+                if header_match:
+                    image_ext = header_match.group(1)
+            
             request_body = {
-                "model": "grok-2-vision-1212",
+                "model": "grok-2-vision-preview",
                 "messages": [{
                     "role": "user",
                     "content": [
@@ -59,7 +66,7 @@ class GalleryHandler(SimpleHTTPRequestHandler):
                         },
                         {
                             "type": "image_url",
-                            "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},
+                            "image_url": {"url": f"data:image/{image_ext};base64,{image_data}"},
                         },
                     ],
                 }],
