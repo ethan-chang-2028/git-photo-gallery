@@ -27,8 +27,7 @@ async function analyzeWithGrok() {
     response.textContent = '';
 
     try {
-        const apiKey = typeof secrets !== 'undefined' ? secrets.GrokAPIKey : 
-                      process.env.GrokAPIKey;
+        const apiKey = typeof secrets !== 'undefined' ? secrets.GrokAPIKey : null;
 
         if (!apiKey || apiKey === 'YOUR_GROK_API_KEY') {
             throw new Error('Grok API key not configured. Set GrokAPIKey in Replit secrets.');
