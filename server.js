@@ -74,7 +74,7 @@ async function analyzeImage(request, response) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "pixtral-large-latest",
+        model: "mistral-small-latest",
         messages: [{
           role: "user",
           content: [
