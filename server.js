@@ -55,14 +55,14 @@ async function analyzeImage(request, response) {
   const question = String(payload.question || "").trim();
   const imageData = String(payload.imageData || "").trim();
   const mimeType = String(payload.mimeType || "image/jpeg");
-  const apiKey = process.env.MistralAPIKey;
+  const apiKey = process.env.APIKey;
 
   if (!question || !imageData) {
     sendJson(response, 400, { error: "Select an image and enter a question first." });
     return;
   }
   if (!apiKey) {
-    sendJson(response, 503, { error: "MistralAPIKey is not configured in Replit Secrets." });
+    sendJson(response, 503, { error: "APIKey is not configured in Replit Secrets." });
     return;
   }
 
@@ -74,7 +74,7 @@ async function analyzeImage(request, response) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "mistral-large-latest",
+        model: "pixtral-large-latest",
         messages: [{
           role: "user",
           content: [
