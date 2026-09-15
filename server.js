@@ -5,7 +5,7 @@ const path = require("path");
 const PORT = 5000;
 const HOST = "0.0.0.0";
 const MAX_BODY_SIZE = 12 * 1024 * 1024;
-const XAI_ENDPOINT = "https://api.x.ai/v1/chat/completions";
+const MISTRAL_ENDPOINT = "https://api.mistral.ai/v1/chat/completions";
 const PUBLIC_DIR = __dirname;
 
 function sendJson(response, status, payload) {
@@ -47,26 +47,26 @@ async function analyzeImage(request, response) {
   const question = String(payload.question || "").trim();
   const imageData = String(payload.imageData || "").trim();
   const mimeType = String(payload.mimeType || "image/jpeg");
-  const apiKey = process.env.GrokAPIKey;
+  const apiKey = process.env.MistralAPIKey;
 
   if (!question || !imageData) {
     sendJson(response, 400, { error: "Select an image and enter a question first." });
     return;
   }
   if (!apiKey) {
-    sendJson(response, 503, { error: "GrokAPIKey is not configured in Replit Secrets." });
+    sendJson(response, 503, { error: "MistralAPIKey is not configured in Replit Secrets." });
     return;
   }
 
   try {
-    const apiResponse = await fetch(XAI_ENDPOINT, {
+    const apiResponse = await fetch(MISTRAL_ENDPOINT, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "grok-2-vision-1212",
+        model: "mistral-large-latest",
         messages: [{
           role: "user",
           content: [
@@ -90,15 +90,15 @@ async function analyzeImage(request, response) {
     if (!apiResponse.ok || !answer) {
       const message = typeof data.error === "string"
         ? data.error
-        : data.error?.message || data.message || "The Grok request failed.";
-      console.error(`Grok API response ${apiResponse.status}: ${message}`);
+        : data.error?.message || data.message || "The Mistral request failed.";
+      console.error(`Mistral API response ${apiResponse.status}: ${message}`);
       sendJson(response, 502, { error: message });
       return;
     }
     sendJson(response, 200, { answer });
   } catch (error) {
-    console.error("Grok request failed:", error.message);
-    sendJson(response, 502, { error: "Grok did not respond. Please try again." });
+    console.error("Mistral request failed:", error.message);
+    sendJson(response, 502, { error: "Mistral did not respond. Please try again." });
   }
 }
 
