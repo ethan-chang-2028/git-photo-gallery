@@ -8,7 +8,7 @@ function selectImage(card) {
     document.getElementById('ai-status').textContent = `Selected: ${card.querySelector('.card-title').textContent}`;
 }
 
-async function analyzeWithGrok() {
+async function analyzeWithMistral() {
     const question = document.getElementById('ai-question').value;
     const status = document.getElementById('ai-status');
     const response = document.getElementById('ai-response');
@@ -23,7 +23,7 @@ async function analyzeWithGrok() {
         return;
     }
 
-    status.textContent = 'Analyzing with Grok AI...';
+    status.textContent = 'Analyzing with Mistral AI...';
     response.textContent = '';
 
     try {
@@ -77,10 +77,10 @@ async function fetchImageAsBase64(url) {
     });
 }
 
-document.getElementById('ai-analyze-btn').addEventListener('click', analyzeWithGrok);
+document.getElementById('ai-analyze-btn').addEventListener('click', analyzeWithMistral);
 
 document.getElementById('ai-question').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-        analyzeWithGrok();
+        analyzeWithMistral();
     }
 });
