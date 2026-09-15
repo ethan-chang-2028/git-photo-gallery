@@ -88,7 +88,9 @@ async function analyzeImage(request, response) {
     const answer = data.choices?.[0]?.message?.content;
 
     if (!apiResponse.ok || !answer) {
-      const message = data.error?.message || "The Grok request failed.";
+      const message = typeof data.error === "string"
+        ? data.error
+        : data.error?.message || data.message || "The Grok request failed.";
       console.error(`Grok API response ${apiResponse.status}: ${message}`);
       sendJson(response, 502, { error: message });
       return;
