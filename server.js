@@ -33,6 +33,14 @@ function readBody(request) {
   });
 }
 
+function extractRelatedFoods(answer) {
+  const relatedMatch = answer.match(/Related Foods:\s*([^\n]+)/i);
+  if (relatedMatch) {
+    return relatedMatch[1].split(',').map(f => f.trim()).filter(f => f);
+  }
+  return [];
+}
+
 async function analyzeImage(request, response) {
   let payload;
   try {
@@ -72,7 +80,13 @@ async function analyzeImage(request, response) {
           content: [
             {
               type: "text",
-              text: `Analyze this image and answer: ${question}. Keep your response short and concise.`,
+              text: `Analyze this food image. Answer the question: "${question}". Then, suggest 3-5 related foods or dishes that pair well with this food. Format your response as:
+              
+              Answer: [your answer to the question]
+              
+              Related Foods: [comma-separated list of 3-5 related foods]
+              
+              Keep your response concise and informative.`,
             },
             {
               type: "image_url",
@@ -80,7 +94,7 @@ async function analyzeImage(request, response) {
             },
           ],
         }],
-        max_tokens: 200,
+        max_tokens: 300,
         temperature: 0.7,
       }),
     });
@@ -95,7 +109,7 @@ async function analyzeImage(request, response) {
       sendJson(response, 502, { error: message });
       return;
     }
-    sendJson(response, 200, { answer });
+    sendJson(response, 200, { answer, relatedFoods: extractRelatedFoods(answer) });
   } catch (error) {
     console.error("Mistral request failed:", error.message);
     sendJson(response, 502, { error: "Mistral did not respond. Please try again." });

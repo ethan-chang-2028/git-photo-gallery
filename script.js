@@ -55,9 +55,18 @@ async function analyzeWithMistral() {
         if (apiResponse.ok && data.answer) {
             response.textContent = data.answer;
             status.textContent = 'Analysis complete!';
+            
+            const relatedFoodsContainer = document.getElementById('related-foods');
+            if (data.relatedFoods && data.relatedFoods.length > 0) {
+                relatedFoodsContainer.innerHTML = '<h3>Related Foods:</h3>' + 
+                    data.relatedFoods.map(food => `<span class="food-tag">${food}</span>`).join('');
+            } else {
+                relatedFoodsContainer.innerHTML = '';
+            }
         } else {
             response.textContent = `API Error: ${data.error || 'The analysis request failed.'}`;
             status.textContent = 'Error';
+            document.getElementById('related-foods').innerHTML = '';
         }
     } catch (error) {
         console.error('Error:', error);

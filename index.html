@@ -16,10 +16,11 @@
     <div class="ai-interface">
         <div class="ai-controls">
             <input type="text" id="ai-question" placeholder="Ask a question about an image..." />
-            <button id="ai-analyze-btn">Analyze with Grok AI</button>
+            <button id="ai-analyze-btn">Analyze with Mistral AI</button>
         </div>
         <div id="ai-status"></div>
         <div id="ai-response"></div>
+        <div id="related-foods" class="related-foods"></div>
     </div>
 
     <div class="category">
@@ -36,9 +37,20 @@
                 <div class="card-caption">A vibrant green matcha latte with a smooth, creamy texture.</div>
             </div>
             <div class="card" onclick="selectImage(this)">
-                <img src="images/images.jpeg" alt="Hot Drink">
-                <div class="card-title">Hot Drink</div>
-                <div class="card-caption">A warm beverage.</div>
+                <img src="images/how-to-make-a-macchiato-003.jpg" alt="Macchiato">
+                <div class="card-title">Macchiato</div>
+                <div class="card-caption">A layered espresso drink with steamed milk.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="category">
+        <h2>Cold Drinks</h2>
+        <div class="gallery">
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/IMG_3431-tiramisu-cake.jpg" alt="Tiramisu Milkshake">
+                <div class="card-title">Tiramisu Milkshake</div>
+                <div class="card-caption">A creamy tiramisu-flavored milkshake.</div>
             </div>
         </div>
     </div>
@@ -81,6 +93,17 @@
                 <img src="images/Strawberry-Shortcake-Cake-10-scaled.jpg" alt="Strawberry Shortcake">
                 <div class="card-title">Strawberry Shortcake</div>
                 <div class="card-caption">A layered strawberry shortcake with fresh whipped cream and berries.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <h2>More Desserts</h2>
+        <div class="gallery">
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/IMG_3431-tiramisu-cake.jpg" alt="Tiramisu">
+                <div class="card-title">Tiramisu</div>
+                <div class="card-caption">Classic Italian tiramisu with layers of coffee-soaked ladyfingers and mascarpone cream.</div>
             </div>
         </div>
     </div>
