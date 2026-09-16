@@ -5,7 +5,7 @@ const path = require("path");
 const PORT = 5000;
 const HOST = "0.0.0.0";
 const MAX_BODY_SIZE = 12 * 1024 * 1024;
-const OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions";
+const MISTRAL_ENDPOINT = "https://api.mistral.ai/v1/chat/completions";
 const PUBLIC_DIR = __dirname;
 
 function sendJson(response, status, payload) {
@@ -55,26 +55,26 @@ async function analyzeImage(request, response) {
   const question = String(payload.question || "").trim();
   const imageData = String(payload.imageData || "").trim();
   const mimeType = String(payload.mimeType || "image/jpeg");
-  const apiKey = process.env.GPTKEey;
+  const apiKey = process.env.MistrailAPIKey;
 
   if (!question || !imageData) {
     sendJson(response, 400, { error: "Select an image and enter a question first." });
     return;
   }
   if (!apiKey) {
-    sendJson(response, 503, { error: "GPTKEey is not configured in Replit Secrets." });
+    sendJson(response, 503, { error: "MistrailAPIKey is not configured in Replit Secrets." });
     return;
   }
 
   try {
-    const apiResponse = await fetch(OPENAI_ENDPOINT, {
+    const apiResponse = await fetch(MISTRAL_ENDPOINT, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "mistral-small-latest",
         messages: [{
           role: "user",
           content: [

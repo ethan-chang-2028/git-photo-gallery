@@ -23,7 +23,7 @@ async function analyzeWithMistral() {
         return;
     }
 
-    status.textContent = 'Analyzing with ChatGPT...';
+    status.textContent = 'Analyzing with Mistral AI...';
     response.textContent = '';
 
     try {
