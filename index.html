@@ -3,25 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Gallery with AI Analysis</title>
+    <title>Food & Drink Gallery</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <h1>Food & Drink Gallery</h1>
-        <p class="subtitle">Ask AI to analyze any image</p>
+        <p class="subtitle">Browse our delicious collection</p>
     </header>
-
-    <div class="ai-interface">
-        <div class="ai-controls">
-            <input type="text" id="ai-question" placeholder="Ask a question about an image..." />
-            <button id="ai-analyze-btn">Analyze with Mistral AI</button>
-        </div>
-        <div id="ai-status"></div>
-        <div id="ai-response"></div>
-        <div id="related-foods" class="related-foods"></div>
-    </div>
 
     <div class="category">
         <h2>Hot Drinks</h2>
@@ -52,6 +42,16 @@
                 <div class="card-title">Tiramisu Milkshake</div>
                 <div class="card-caption">A creamy tiramisu-flavored milkshake.</div>
             </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/iced-coffee.jpg" alt="Iced Coffee">
+                <div class="card-title">Iced Coffee</div>
+                <div class="card-caption">Refreshing iced coffee with a smooth, bold flavor.</div>
+            </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/lemonade.jpg" alt="Lemonade">
+                <div class="card-title">Lemonade</div>
+                <div class="card-caption">Classic lemonade, tart and refreshing.</div>
+            </div>
         </div>
     </div>
     
@@ -72,6 +72,16 @@
                 <img src="images/garden-side-salad-1.jpg" alt="Garden Side Salad">
                 <div class="card-title">Garden Side Salad</div>
                 <div class="card-caption">A fresh garden salad with mixed greens and seasonal vegetables.</div>
+            </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/grilled-salmon.jpg" alt="Grilled Salmon">
+                <div class="card-title">Grilled Salmon</div>
+                <div class="card-caption">Perfectly grilled salmon with herbs and lemon.</div>
+            </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/beef-burger.jpg" alt="Beef Burger">
+                <div class="card-title">Beef Burger</div>
+                <div class="card-caption">Juicy beef burger with fresh toppings.</div>
             </div>
         </div>
     </div>
@@ -104,6 +114,37 @@
                 <img src="images/IMG_3431-tiramisu-cake.jpg" alt="Tiramisu">
                 <div class="card-title">Tiramisu</div>
                 <div class="card-caption">Classic Italian tiramisu with layers of coffee-soaked ladyfingers and mascarpone cream.</div>
+            </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/chocolate-chip-cookies.jpg" alt="Chocolate Chip Cookies">
+                <div class="card-title">Chocolate Chip Cookies</div>
+                <div class="card-caption">Warm, gooey chocolate chip cookies fresh from the oven.</div>
+            </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/cheesecake.jpg" alt="Cheesecake">
+                <div class="card-title">Cheesecake</div>
+                <div class="card-caption">Creamy cheesecake with a graham cracker crust.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <h2>Similar Items</h2>
+        <div class="gallery">
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/blueberry-muffin.jpg" alt="Blueberry Muffin">
+                <div class="card-title">Blueberry Muffin</div>
+                <div class="card-caption">Moist blueberry muffin with a sweet streusel topping.</div>
+            </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/croissant.jpg" alt="Croissant">
+                <div class="card-title">Croissant</div>
+                <div class="card-caption">Flaky, buttery croissant perfect for breakfast.</div>
+            </div>
+            <div class="card" onclick="selectImage(this)">
+                <img src="images/pancakes.jpg" alt="Pancakes">
+                <div class="card-title">Pancakes</div>
+                <div class="card-caption">Stack of fluffy pancakes with maple syrup.</div>
             </div>
         </div>
     </div>
