@@ -1,4 +1,5 @@
 let selectedImage = null;
+let analysisInProgress = false;
 
 function selectImage(card) {
     const cards = document.querySelectorAll('.card');
@@ -9,9 +10,14 @@ function selectImage(card) {
 }
 
 async function analyzeWithMistral() {
+    if (analysisInProgress) {
+        return;
+    }
+
     const question = document.getElementById('ai-question').value;
     const status = document.getElementById('ai-status');
     const response = document.getElementById('ai-response');
+    const analyzeButton = document.getElementById('ai-analyze-btn');
 
     if (!selectedImage) {
         status.textContent = 'Please select an image first.';
@@ -23,6 +29,8 @@ async function analyzeWithMistral() {
         return;
     }
 
+    analysisInProgress = true;
+    analyzeButton.disabled = true;
     status.textContent = 'Analyzing with Mistral AI...';
     response.textContent = '';
 
@@ -72,6 +80,9 @@ async function analyzeWithMistral() {
         console.error('Error:', error);
         response.textContent = `Error: ${error.message}`;
         status.textContent = 'Error';
+    } finally {
+        analysisInProgress = false;
+        analyzeButton.disabled = false;
     }
 }
 
